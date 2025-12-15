@@ -1,0 +1,8 @@
+# tmp 
+tmp/  
+
+# data目录下的所有文件  
+data/* 
+
+# 本机脚本
+scripts/copy_files.sh
