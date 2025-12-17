@@ -6,7 +6,7 @@ import torchvision
 import torchvision.transforms as transforms
 import os
 
-def load_cifar10_data(data_dir='./data', batch_size=128):
+def load_cifar10_data(data_dir='./data', batch_size=128, transform_train=None):
     """
     下载 CIFAR-10 数据集并创建数据加载器
     
@@ -25,19 +25,20 @@ def load_cifar10_data(data_dir='./data', batch_size=128):
     # CIFAR-10 数据集的均值和标准差，用于归一化
     stats = ((0.4914, 0.4822, 0.4465), (0.2023, 0.1994, 0.2010))
     
-    # 训练数据的预处理（包含数据增强）
-    transform_train = transforms.Compose([
-        transforms.RandomCrop(32, padding=4),      # 随机裁剪
-        transforms.RandomHorizontalFlip(),          # 随机水平翻转
-        transforms.ToTensor(),                      # 转换为张量
-        transforms.Normalize(*stats),               # 归一化
-    ])
-    
     # 测试数据的预处理（不包含数据增强）
     transform_test = transforms.Compose([
         transforms.ToTensor(),
         transforms.Normalize(*stats),
     ])
+
+    # 训练数据预处理
+    if transform_train is None:
+        transform_train = transforms.Compose([
+            transforms.RandomCrop(32, padding=4),      # 随机裁剪
+            transforms.RandomHorizontalFlip(),          # 随机水平翻转
+            transforms.ToTensor(),                      # 转换为张量
+            transforms.Normalize(*stats),               # 归一化
+        ])
     
     print("正在下载 CIFAR-10 训练集...")
     # 下载并加载训练集
